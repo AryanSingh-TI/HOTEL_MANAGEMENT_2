@@ -1,0 +1,121 @@
+<odoo>
+
+    <record id="view_hotel_room_tree" model="ir.ui.view">
+        <field name="name">hotel.room.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+           
+            <xpath expr="//tree" position="inside">
+                <field name="is_available" string="Is Available"/>
+            </xpath>
+
+        </field>
+    </record>
+
+   
+    <record id="view_hotel_room_form" model="ir.ui.view">
+        <field name="name">hotel.room.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            
+           
+            <xpath expr="//field[@name='purchase_ok']" position="attributes">
+            <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="is_hotel_room" field_id="is_hotel_room"/>
+                </span>
+                <label for="is_hotel_room" string="Is Hotel Room"/>
+            </xpath>
+
+            <xpath expr="//page[@name='sales']" position="attributes">
+                <attribute name="string">Bookings</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='standard_price']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title']/label" position="attributes">
+                <attribute name="string">Room Number</attribute>
+            </xpath>
+
+            <xpath expr="//field[@class='text-break']" position='attributes'>
+                <attribute name="placeholder">Eg. of Room Number - 101</attribute>
+            </xpath>
+
+
+           <xpath expr="//field[@name='barcode']" position='attributes'>
+                <attribute name="invisible">1</attribute>
+           </xpath>
+
+           <xpath expr="//field[@name='default_code']" position='attributes'>
+                <attribute name="invisible">1</attribute>
+           </xpath>
+
+           <xpath expr="//label[@for='lst_price']" position="attributes">
+                <attribute name="string">Room Price</attribute>
+           </xpath>
+
+           <xpath expr="//field[@name='product_tag_ids']" position="attributes">
+                <attribute name="string">Various Room Amenities</attribute>
+           </xpath>
+
+           <xpath expr="//field[@name='additional_product_tag_ids']" position="attributes">
+                <attribute name="string">Additional Room Amenities</attribute>
+           </xpath>
+
+           <xpath expr="//field[@name='invoice_policy']" position="attributes">
+                <attribute name="invisible">1</attribute>
+           </xpath>
+
+           <xpath expr="//notebook" position="inside">
+                <page name="room_amenities" string="Room amenities">
+                    <group>
+                        <field name="product_tag_ids" widget="many2many_tags">Various Room Amenities</field>
+                        <field name="additional_product_tag_ids" widget="many2many_tags">Additional Room Amenities</field>
+                    </group>
+                </page>
+           </xpath>
+
+           <xpath expr="//page[@name='general_information']//field[@name='product_tag_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+           </xpath>
+
+            <xpath expr="//page[@name='general_information']//field[@name='additional_product_tag_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+           </xpath>
+
+           <xpath expr="//page[@name='invoicing']" position="attributes">
+                <attribute name="invisible">1</attribute>
+           </xpath>
+
+           <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="is_available" string="Is Available"/>
+           </xpath>
+
+        </field>
+    </record>
+
+    
+    <record id="hotel_management_room_action" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">form,tree</field>
+        <field name="view_id" ref="view_hotel_room_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage the rooms of your hotel
+            </p>
+        </field>
+        <field name="domain">[('is_hotel_room', '=', True)]</field>
+    </record>
+
+    <!-- Menu items -->
+    <menuitem id="hotel_management_root" name="Hotel Management 2"/>
+    <menuitem id="hotel_management_menu_rooms" name="Rooms" parent="hotel_management_root" action="hotel_management_room_action"/>
+</odoo>

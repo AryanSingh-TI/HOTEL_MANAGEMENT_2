@@ -1,0 +1,83 @@
+<odoo>
+    <record id="view_hotel_booking_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">[('is_hotel_customer', '=', True)]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='validity_date']" position="attributes">
+                <attribute name="string">Check-out-Date</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='validity_date']" position="after">
+                <field name="is_hotel_booking">Is Hotel Booking</field>
+            </xpath>
+            
+            <xpath expr="//button[@id='send_by_email_primary']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@id='send_by_email']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_preview_sale_order']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <field name="booking_state" widget="statusbar" on_change="1"/>
+            </xpath>
+
+            <xpath expr="//button[@id='create_invoice']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@id='create_invoice_percentage']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="room_state" string="Rooms State"/>
+            </xpath>
+
+            <xpath expr="//field[@name='room_state']" position="after">
+                <field name="cancelled_by" string="Cancelled By"/>
+                <field name="cancel_reason" string="Cancellation Reason"/>
+            </xpath>
+            
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="context">{'is_clicked_by_user':True}</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_hotel_booking_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_hotel_bookings" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_hotel_booking_tree"/>
+        <field name="domain">[('is_hotel_booking','=',True)]</field>
+        <field name="context">{'default_is_hotel_booking': True , 'group_by': ['booking_state']}</field> 
+    </record>
+
+    <menuitem id="hotel_bookings_menu" name="Bookings" parent="hotel_management_root" action="action_hotel_bookings"/>
+</odoo>

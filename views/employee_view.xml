@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_hotel_employee_tree" model="ir.ui.view">
+        <field name="name">hr.employee.tree</field>
+        <field name='model'>hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside"></xpath>
+        </field>
+    </record>
+
+    <record id="view_hote_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[1]/group[2]" position="inside">
+                <field name="is_hotel_employee">Is Hotel Customer</field>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_hotel_employee" model="ir.actions.act_window">
+        <field name="name">Employee</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_hotel_employee_tree"/>
+        <field name="domain">[('is_hotel_employee','=',True)]</field>
+    </record>
+
+    <menuitem id="hotel_employee_menu" name="Employees" parent="hotel_management_root" action="action_hotel_employee"/>
+</odoo>

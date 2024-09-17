@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_hotel_department_form" model="ir.ui.view">
+        <field name="name">hr.department.form</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" positon="inside"></xpath>
+        </field>
+    </record>
+
+    <record id="view_hotel_department_tree" model="ir.ui.view">
+        <field name="name">hr.department.tree</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside"></xpath>
+        </field>
+    </record>
+
+    <record id="action_hotel_department" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="res_model">hr.department</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_hotel_department_tree"/>
+    </record>
+
+    <menuitem id="hotel_departments_menu" name="Departments" parent="hotel_management_root" action="action_hotel_department"/>
+</odoo>
