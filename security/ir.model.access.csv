@@ -4,4 +4,4 @@ access_customer_user,acces_customer_user,model_res_partner,,1,1,1,1
 access_bookings_user,access_bookings_user,model_sale_order,,1,1,1,1
 access_employee_user,access_booking_user,model_hr_employee,,1,1,1,1
 access_department_user,access_department_user,model_hr_department,,1,1,1,1
-access_sale_order_cancel_wizard_user,sale.order.cancel.wizard,model_sale_order_cancel_wizard,,1,0,1,0
+access_sale_order_cancel_wizard_user,sale.order.cancel.wizard,model_sale_order_cancel_wizard,,1,1,1,1

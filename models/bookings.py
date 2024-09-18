@@ -1,5 +1,6 @@
 from odoo import fields,api,models,_
 from odoo.exceptions import ValidationError
+import logging
 
 class HotelBookings(models.Model):
     _inherit='sale.order'
@@ -47,15 +48,12 @@ class HotelBookings(models.Model):
                 raise ValidationError(_("No Rooms are available"))
 
     def action_cancel(self):
+        _logger=logging.getLogger(__name__)
+        _logger.info(self.env.context)
         
         if self.env.context.get('is_clicked_by_user'):
-            
-            super(HotelBookings, self).action_cancel()
-
-            for record in self:
-                if record.is_hotel_booking:
-                    record.booking_state = 'cancelled'
-
+            _logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ACTION CANCEL CALLED WITH USER CLICK@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            _logger.info(self.env.context)
             return {
                 'name': 'Cancel Sale Order',
                 'view_mode': 'form',
@@ -64,17 +62,18 @@ class HotelBookings(models.Model):
                 'target': 'new',
                 'context': {
                     'active_id': self.id,
+                    'default_sale_order_name' : self.name,
+                    'default_sale_order_total': self.amount_total,
+                    'sale_order_partner_id' : self.partner_id.id
                 },
             }
-    
-    
-    
-    
-    
+        
+        else:
 
+            _logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ACTION CANCEL CALLED WITHOUT USER CLICK@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            _logger.info(self.env.context)
+            super(HotelBookings, self).action_cancel()
 
-
-
-    
-
-    
+            for record in self:
+                if record.is_hotel_booking:
+                    record.booking_state = 'cancelled' 

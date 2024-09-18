@@ -5,6 +5,9 @@
         <field name="arch" type="xml">
             <form string="Cancel Sale Order">
                 <group>
+                    <field name="sale_order_name" readonly='1'/>
+                    <field name="sale_order_total" readonly='1'/>
+                    <field name="sale_order_partner_id" readonly='1'/>
                     <field name="employee_id" />
                     <field name="description" />
                 </group>
