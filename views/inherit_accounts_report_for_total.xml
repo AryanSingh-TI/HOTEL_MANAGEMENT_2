@@ -1,0 +1,14 @@
+<odoo>
+    <template id="inherit_document_tax_totals_template" inherit_id="account.document_tax_totals_template">
+
+        <xpath expr="//tr[contains(@class, 'o_total')]" position="replace">
+            <tr class="border-black o_total" style="background-color: black; color: white;">
+                <th><strong>Total Room Price</strong></th>
+                <th class="text-end" style="background-color: black; color: white;">
+                    <span t-out="tax_totals['formatted_amount_total']" style="color: white;">31.05</span>
+                </th>
+            </tr>
+        </xpath>
+
+    </template>
+</odoo>

@@ -1,0 +1,99 @@
+<odoo>
+    <record id="action_report_sale_order" model="ir.actions.report">
+        <field name="name">report.sale.order</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">HOTEL_MANAGEMENT_2.report_sale_order</field>
+        <field name="report_file">HOTEL_MANAGEMENT_2.report_sale_order</field>
+        <field name="print_report_name">'%s and %s' % (object.name, object.booking_state)</field>
+    </record>
+
+    <template id="report_sale_order">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <main>
+                            <div class="header text-center mb-4"></div>
+                            <h2 class="font-weight-bold">Sales Order Report</h2>
+
+                            <p><strong>Order Reference:</strong> <t t-esc="doc.name"/></p>
+                            <p><strong>Customer:</strong> <t t-esc="doc.partner_id.name"/></p>
+                            <p><strong>Customer Email:</strong> <t t-esc="doc.partner_id.email or 'N/A'"/></p>
+                            <p><strong>Customer Phone:</strong> <t t-esc="doc.partner_id.phone or 'N/A'"/></p>
+                            <p><strong>Booking State:</strong> <t t-esc="doc.booking_state"/></p>
+
+                            <h3 class="mt-4">Booked Rooms</h3>
+                            <!-- Booked Rooms Container -->
+                            <div class="booked-rooms-container">
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <!-- Call subtemplate for each room card -->
+                                    <t t-call="HOTEL_MANAGEMENT_2.room_card_template">
+                                        <t t-set="line" t-value="line"/>
+                                    </t>
+                                </t>
+                            </div>
+
+                            <div class="total-price text-left"> 
+                                <t t-if="doc.booking_state == 'cancelled'">
+                                    <strong style="color: red;">Cancelled</strong>
+                                </t>
+                                <t t-else="">
+                                    <strong>Total Price:</strong> <t t-esc="doc.total_price"/>
+                                </t>
+                            </div>
+                        </main>
+
+                        <div class="footer text-center mt-4">
+                            <p>Thank you for choosing our hotel!</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+
+        <style>
+            .header {
+                border-bottom: 2px solid #007bff;
+            }
+            .footer {
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+                font-size: 12px;
+                color: #777;
+            }
+            .page {
+                padding: 20px;
+            }
+
+            /* Total price section */
+            .total-price {
+                margin-top: 20px;
+                font-size: 16px;
+            }
+        </style>
+    </template>
+
+    
+    <template id="room_card_template">
+    <div class="room-card" style="display: inline-block; border: 1px solid #b3e5fc; border-radius: 10px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); padding: 15px; background-color: #f9f9f9; width: 30%; margin: 10px; vertical-align: top;">
+        <h4 style="margin-bottom: 10px; font-size: 18px; text-align: center;">Room: <t t-esc="line.product_id.room_type"/></h4>
+        
+        <div style="display: flex; align-items: center; justify-content: center; margin: 5px 0;">
+            <p style="margin: 0 5px; text-align: center;">
+                <strong>Check-in:</strong> <t t-esc="line.order_id.validity_date"/>
+            </p>
+            <br/>
+             <span style="font-size: 30px; color: #81d4fa; margin: 0 10px; line-height: 0; position:relative; left:100px;">&#x2193;</span>
+            <br/>
+            <p style="margin: 0 5px; text-align: center;">
+                <strong>Check-out:</strong> <t t-esc="line.order_id.check_out_date"/>
+            </p>
+        </div>
+
+        <p style="margin: 5px 0; text-align: center;"><strong>Price:</strong> <t t-esc="line.price_total"/></p>
+    </div>
+
+    </template>
+
+</odoo>

@@ -1,0 +1,73 @@
+<odoo>
+    <template id="inherit_quotation_report_id" inherit_id="sale.report_saleorder_document">
+
+        
+         <xpath expr="//div[@id='informations']" position="replace">
+
+            <div class="row" style="background-color:black; color:white; padding: 10px;">
+                <div class="col-4 text-center" style="background-color:black; border: 1px solid white; padding: 10px;">
+                    <p style="color:white; font-family: 'Gothic A1', sans-serif;"><strong>Check-In Date</strong></p>
+                    <p style="color: #ccc; font-size: 16px;"><span t-field="doc.date_order"/></p>
+                </div>
+
+                <div class="col-4 text-center" style="background-color:black; border: 1px solid white; padding: 10px;">
+                    <p style="color:white; font-family: 'Gothic A1', sans-serif;"><strong>Check-Out Date</strong></p>
+                    <p style="color: #ccc; font-size: 16px;"><span t-field="doc.validity_date"/></p>
+                </div>
+
+                <div class="col-4 text-center" style="background-color:black; border: 1px solid white; padding: 10px;">
+                    <p style="color:white; font-family: 'Gothic A1', sans-serif;"><strong>Sales Person</strong></p>
+                    <p style="color: #ccc; font-size: 16px;"><span t-field="doc.user_id.name"/></p>
+                </div>
+            </div>
+
+        </xpath>
+
+        <xpath expr="//table[contains(@class, 'o_main_table')]" position="replace">
+
+            <table class="table table-sm o_main_table table-borderless mt-4" style="background-color:black; color:white;">
+            
+                <thead style="background-color:black; color:white; border-bottom: 2px solid white;">
+                    <tr>
+                        <th class="text-start" style="font-family: 'Gothic A1', sans-serif;">Room Name</th>
+                        <th class="text-start" style="font-family: 'Gothic A1', sans-serif;">Room Type</th>
+                        <th class="text-end" style="font-family: 'Gothic A1', sans-serif;">Room Price</th>
+                        <th class="text-end" style="font-family: 'Gothic A1', sans-serif;">Taxes</th>
+                        <th class="text-end" style="font-family: 'Gothic A1', sans-serif;">Total Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody class="sale_tbody">
+                    <t t-foreach="doc.order_line" t-as="line">
+                        <tr>
+                            
+                            <td class="text-start" style="color: #ccc; font-family: 'Gothic A1', sans-serif;">
+                                <span t-field="line.product_id.name"/>
+                            </td>
+                            
+                            <td class="text-start" style="color: #ccc; font-family: 'Gothic A1', sans-serif;">
+                                <span t-field="line.product_id.room_type"/>
+                            </td>
+                            
+                            <td class="text-end" style="color: #ccc; font-family: 'Gothic A1', sans-serif;">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            
+                            <td class="text-end" style="color: #ccc; font-family: 'Gothic A1', sans-serif;">
+                                <span t-field="line.tax_id"/>
+                            </td>
+                            
+                            <td class="text-end" style="color: #ccc; font-family: 'Gothic A1', sans-serif;">
+                                <span t-field="line.price_total"/>
+                            </td>
+
+                        </tr>
+                    </t>
+                </tbody>
+
+            </table>
+
+        </xpath>
+
+    </template>
+</odoo>

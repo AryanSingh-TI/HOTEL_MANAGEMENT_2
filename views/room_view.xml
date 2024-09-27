@@ -98,6 +98,10 @@
                 <field name="is_available" string="Is Available"/>
            </xpath>
 
+           <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="room_type">Room Type</field>
+           </xpath>
+
         </field>
     </record>
 
@@ -113,6 +117,7 @@
             </p>
         </field>
         <field name="domain">[('is_hotel_room', '=', True)]</field>
+        <field name="context">{'default_is_hotel_room':True}</field>
     </record>
 
     <!-- Menu items -->

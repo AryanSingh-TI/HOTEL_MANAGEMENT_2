@@ -8,11 +8,6 @@ class HotelRoom(models.Model):
         ('double', 'Double'),
         ('suite', 'Suite')
     ], string='Room Type')
-    price = fields.Monetary(string='Price per Day',  currency_field='currency_id')
-    availability = fields.Selection([
-        ('available', 'Available'),
-        ('occupied', 'Occupied')
-    ], string='Availability')
 
     room_image = fields.Binary(string = "Room Image")
     currency_id = fields.Many2one('res.currency', string='Currency')

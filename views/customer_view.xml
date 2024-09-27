@@ -44,10 +44,17 @@
             <xpath expr="//sheet/group[1]/group[1]" position="inside">
                 <field name="is_hotel_customer">Is Hotel Customer</field>
             </xpath>
+            <xpath expr="//field[@name='is_hotel_customer']" position="after">
+                <field name="aadhaar_number"  string="Aadhar Number"/>
+            </xpath>
 
+            <!-- <xpath expr="//page[@name='optional_products']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
 
         </field>
     </record>
+    <!-- sale_management.sale_order_form_quote -->
 
     <record id="action_hotel_customer" model="ir.actions.act_window">
         <field name="name">Customers</field>
@@ -55,6 +62,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_hotel_customer_tree"/>
         <field name="domain">[('is_hotel_customer', '=',True)]</field>
+        
     </record>
 
     <menuitem id="hotel_customer_menu" name="Customers" parent="hotel_management_root" action="action_hotel_customer"/>

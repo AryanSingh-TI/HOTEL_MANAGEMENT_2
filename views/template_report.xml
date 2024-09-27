@@ -1,0 +1,129 @@
+<odoo>
+    <!-- Action to generate the report -->
+    <record id="template_report" model="ir.actions.report">
+        <field name="name">report.template.sale.order</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">HOTEL_MANAGEMENT_2.template_report_id</field>
+        <field name="report_file">HOTEL_MANAGEMENT_2.template_report_id</field>
+        <field name="print_report_name">'%s and %s' % (object.name, object.booking_state)</field>
+    </record>
+
+    <!-- QWeb template for the report -->
+    <template id="template_report_id">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.html_container">
+                <div class="page">
+    <!-- Custom Header with solid colors -->
+    <div class="header" style="padding: 60px 20px; text-align: center; color: white;">
+        <img t-att-src="'https://i.ibb.co/GcnCfHx/Add-a-heading.jpg'" style="width:104%;position:absolute;top:0%;left:-0.5%;height:200px;z-index:3;"/>
+    </div>
+        <img t-att-src="'https://i.ibb.co/Jqbc5Lq/pikaso-texttoimage-dark-and-mysterious-neoexpressionism-geometric-sha.jpg'" style="width:530px;position:absolute;left:-0.5%;top:8%;height:650px;z-index:4;opacity:0.;" />
+
+
+        <main style="color: black; font-size: 28px; padding-top: 220px; z-index: 5; position: relative;">
+
+            <span style="font-size:40px;position:absolute;margin-left:195px;font-weight:bold;z-index:10000;color:white; margin-top:475px;"><t t-esc="doc.name"/></span>
+
+            <div style="padding-top: 350px; text-align:center;">
+                <h2 class="font-weight-bold" style="text-align: center; color: white; font-size: 40px; font-family: 'Courier New', monospace;">
+                    Order Information
+                </h2>
+            
+                <p style="color: black; font-size: 30px; font-family: 'Courier New', monospace; z-index: 5; position: relative;">
+                    <strong>Customer:</strong> <strong><t t-esc="doc.partner_id.name"/></strong>
+                </p>
+                <p style="color: black; font-size: 30px; font-family: 'Courier New', monospace; z-index: 5; position: relative;">
+                    <strong>Customer Email:</strong> <strong><t t-esc="doc.partner_id.email or 'N/A'"/></strong>
+                </p>
+                <p style="color: black; font-size: 30px; font-family: 'Courier New', monospace; z-index: 5; position: relative;">
+                    <strong>Customer Phone:</strong> <strong><t t-esc="doc.partner_id.phone or 'N/A'"/></strong>
+                </p>
+                <p style="color: black; font-size: 30px; font-family: 'Courier New', monospace; z-index: 5; position: relative;">
+                    <strong>Booking State:</strong> <strong><t t-esc="doc.booking_state"/></strong>
+                </p>
+            </div>
+
+            <h3 style="color: black; font-size: 34px; font-family: 'Courier New', monospace; text-align:center; z-index: 5; position: relative;" class="mt-4">Booked Rooms</h3>
+
+            <table style="z-index: 4; width: 90%;margin-top: 20px; border-radius: 50px; overflow: hidden; margin-left: auto; margin-right: auto; position: relative;">
+                <thead style="background-color: black; color: white;">
+                    <tr>
+                        <th style="border: 1px solid grey; padding: 15px; color: white; font-size: 28px; font-family: 'Courier New', monospace;">Room Type</th>
+                        <th style="border: 1px solid grey; padding: 15px; color: white; font-size: 28px; font-family: 'Courier New', monospace;">Check-in</th>
+                        <th style="border: 1px solid grey; padding: 15px; color: white; font-size: 28px; font-family: 'Courier New', monospace;">Check-out</th>
+                        <th style="border: 1px solid grey; padding: 15px; color: white; font-size: 28px; font-family: 'Courier New', monospace;">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="doc.order_line" t-as="line">
+                        <tr style="background-color: #f0f0f0;">
+                            <td style="color: black; border: 1px solid grey; padding: 15px; text-align: center; font-size: 24px; font-family: 'Courier New', monospace;">
+                                <t t-esc="line.product_id.room_type"/>
+                            </td>
+                            <td style="color: black; border: 1px solid grey; padding: 15px; text-align: center; font-size: 24px; font-family: 'Courier New', monospace;">
+                                <t t-esc="line.order_id.validity_date"/>
+                            </td>
+                            <td style="color: black; border: 1px solid grey; padding: 15px; text-align: center; font-size: 24px; font-family: 'Courier New', monospace;">
+                                <t t-esc="line.order_id.check_out_date"/>
+                            </td>
+                            <td style="color: black; border: 1px solid grey; padding: 15px; text-align: center; font-size: 24px; font-family: 'Courier New', monospace;">
+                                <t t-esc="line.price_total"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            
+            <div class="total-price" style="margin-top: 20px; color: grey; font-size: 30px; text-align: left; font-family: 'Courier New', monospace; position: relative; z-index: 3;">     
+                <t t-if="doc.booking_state == 'cancelled'">
+                    <strong style="color: black;">Cancelled</strong>
+                </t>
+                <t t-else="">
+                    <strong style="color: black;">Total Price:</strong> <span style="color: black;"><t t-esc="doc.total_price"/></span>
+                </t>
+            </div>
+        </main>
+
+
+    <img t-att-src="'https://i.ibb.co/k9W8T8N/pikaso-texttoimage-modern-style-detailled-illustration-geometric-shap.jpg'" style="width:104%;position:absolute;top:0%;right:-0.5%;bottom:0%;height:100%;opacity:0.5;z-index:3;"/>
+
+    <img t-att-src="'https://i.ibb.co/5xH49cB/pikaso-texttoimage-3d-model-octane-render-volumetric-highly-detailed.jpg'" style="width:104%;position:absolute;top:0%;right:-0.5%;bottom:0%;height:100%;z-index:2;" />
+
+    <div class="footer-image">
+        <img t-att-src="'https://img.freepik.com/free-vector/gradient-background-wave-minimalist-style_483537-4961.jpg'" style="width:200% ; height:200px; position:absolute; left:-1%; z-index:3; bottom:0%; right:-1%;" />
+    </div>
+
+
+    <div class="footer" style="background-color: #000000; padding: 60px 20px; text-align: center; color: white;">
+        <p>Thank you for choosing our hotel!</p>
+    </div>
+</div>
+
+            </t>
+        </t>
+
+        <style>
+            .page {
+                padding: 20px;
+            }
+
+            .total-price {
+                margin-top: 20px;
+                font-size: 16px;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                text-align: center;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        </style>
+    </template>
+
+</odoo>

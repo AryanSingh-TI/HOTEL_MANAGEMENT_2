@@ -8,7 +8,7 @@
                 <attribute name="domain">[('is_hotel_customer', '=', True)]</attribute>
             </xpath>
             <xpath expr="//field[@name='validity_date']" position="attributes">
-                <attribute name="string">Check-out-Date</attribute>
+                <attribute name="string">Check-in-Date</attribute>
             </xpath>
 
             <xpath expr="//field[@name='validity_date']" position="after">
@@ -56,9 +56,69 @@
                 <attribute name="context">{'is_clicked_by_user':True}</attribute>
             </xpath>
 
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_report" string="Print" type="object" invisible="booking_state not in ['booked','cancelled']"/>
+            </xpath>
+
+            <xpath expr="//field[@name='product_template_id']" position="attributes">
+                <attribute name="domain">[('product_variant_ids.is_hotel_room', '=', True)]</attribute>
+                <attribute name="required">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='date_order']" position="replace">
+                <p></p>
+            </xpath>
+
+            <xpath expr="//field[@name='is_hotel_booking']" position = "after">
+                <field name="check_out_date">Check_out_Date</field>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="after">
+                <field name="room_type"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_report']" position="after">
+                <button name="action_report_template" type="object" string="Print template" invisible="booking_state not in ['booked','cancelled']"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="string">Send Cancellation Email</attribute>
+                <attribute name="class">btn-danger</attribute>
+                <attribute name="invisible">booking_state != 'cancelled'</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button name="send_booking_confirmation_email"
+                        type="object"
+                        class="btn-success"
+                        string="Send Confirmation Email"
+                        invisible="booking_state != 'booked'"/>
+            </xpath>
+            
         </field>
     </record>
 
+    <record id="hide_optional_products" model="ir.ui.view">
+        <field name="name">hide.optional.product</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='optional_products']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    
     <record id="view_hotel_booking_tree" model="ir.ui.view">
         <field name="name">sale.order.tree</field>
         <field name="model">sale.order</field>
